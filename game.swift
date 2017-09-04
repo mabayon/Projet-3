@@ -1,5 +1,5 @@
 //
-//  test.swift
+//  game.swift
 //  
 //
 //  Created by Mahieu Bayon on 04/09/2017.
@@ -13,55 +13,48 @@ enum CharacterType {
     case dwarf
 }
 
-class Warrior {
-    let life   = 100
-    let dmg    = 10
+class Warrior: Character {
+    override init() {
+        super.init()
+        type    = .warrior
+        life    = 100
+        dmg     = 10
+    }
 }
 
-class Mage {
-    let life   = 85
-    let care   = 6
+class Mage: Character {
+    override init() {
+        super.init()
+        type    = .mage
+        life    = 85
+        dmg     = 5
+    }
 }
 
-class Dwarf {
-    let life   = 85
-    let dmg    = 15
+class Dwarf: Character {
+    override init() {
+        super.init()
+        type    = .dwarf
+        life    = 85
+        dmg     = 15
+    }
 }
 
-class Colossus {
-    let life   = 200
-    let dmg    = 5
+class Colossus: Character {
+    override init() {
+        super.init()
+        type    = .colossus
+        life    = 200
+        dmg     = 5
+    }
 }
 
 class Character {
-    var name: String?
-    var type: CharacterType
-    var life            =   0
-    var dmg             =   0
-    var care            =   0
+    var name:   String?
+    var type:   CharacterType?
     
-    init(name: String?, type: CharacterType) {
-        self.name = name
-        self.type = type
-        switch type {
-        case .colossus:
-            let faction = Colossus()
-            life        = faction.life
-            dmg         = faction.dmg
-        case .dwarf:
-            let faction = Dwarf()
-            life        = faction.life
-            dmg         = faction.dmg
-        case .mage:
-            let faction = Mage()
-            life        = faction.life
-            care        = faction.care
-        case .warrior:
-            let faction = Warrior()
-            life        = faction.life
-            dmg         = faction.dmg
-        }
-    }
+    var life    =  0
+    var dmg     =  0
 }
 
 class Launcher {
@@ -85,16 +78,20 @@ class Launcher {
                 if let choice = readLine() {
                     switch choice {
                     case "1":
-                        chooseYourName(type: .warrior)
+                        let faction = Warrior()
+                        chooseYourName(player: faction)
                         validNumber = true
                     case "2":
-                        chooseYourName(type: .mage)
+                        let faction = Mage()
+                        chooseYourName(player: faction)
                         validNumber = true
                     case "3":
-                        chooseYourName(type: .colossus)
+                        let faction = Colossus()
+                        chooseYourName(player: faction)
                         validNumber = true
                     case "4":
-                        chooseYourName(type: .dwarf)
+                        let faction = Dwarf()
+                        chooseYourName(player: faction)
                         validNumber = true
                     default:
                         print("Enter a number between 1 and 4")
@@ -104,20 +101,23 @@ class Launcher {
             } while !validNumber
         }
     }
-    private func chooseYourName(type: CharacterType) {
-        print("Choose a name for your hero")
+    private func chooseYourName(player: Character) {
         if let choice = readLine() {
-            let player = Character(name: choice, type: type)
+            player.name = choice
             team.append(player)
         }
-        
+    }
+    func pri() {
+        for i in 0..<3 {
+            print("Name: \(team[i].name!) Faction: \(team[i].type!) Pv: \(team[i].life) DMG: \(team[i].dmg)")
+        }
     }
     func play() {
         description()
         chooseYourCharacters()
+        pri()
     }
 }
 
 var game = Launcher()
 game.play()
-

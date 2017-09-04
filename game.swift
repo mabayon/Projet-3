@@ -112,14 +112,6 @@ class Launcher {
         }
         
     }
-    func pri() {
-        for i in 0..<3{
-            print(team[i].name!)
-            print(team[i].type)
-            print(team[i].life)
-            print(team[i].dmg)
-        }
-    }
     func play() {
         description()
         chooseYourCharacters()

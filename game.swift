@@ -57,65 +57,116 @@ class Character {
     var dmg     =  0
 }
 
-class Launcher {
-    
+class Player {
     var team: [Character] = []
+    var isAlive = true
     
-    private func description() {
-        print("Welcome to TeamFight !!!\n"
-            + "Each team will be composed by 3 fighters and fight until death 💀\n"
-            + "Ready !? \n\n")
-    }
-    
-    private func chooseYourCharacters() {
+    private func chooseYourCharacters(players: [Player]) {
         
-        var validNumber = true
+        var validNumber: Bool
         
         for i in 1..<4 {
-            print("Character nº\(String(i)): Choose your class\n"
-                + " 1. Warrior 🗡   2. Mage ⚡️  3. Colossus 🔨  4. Dwarf ⛏\n")
             repeat {
+                print("\nCharacter nº\(String(i)): Choose your class\n"
+                    + " 1. Warrior 🗡   2. Mage ⚡️  3. Colossus 🔨  4. Dwarf ⛏\n")
+                
+                validNumber = true
                 if let choice = readLine() {
                     switch choice {
                     case "1":
                         let faction = Warrior()
-                        chooseYourName(player: faction)
-                        validNumber = true
+                        chooseYourName(players: players, hero: faction)
                     case "2":
                         let faction = Mage()
-                        chooseYourName(player: faction)
-                        validNumber = true
+                        chooseYourName(players: players, hero: faction)
                     case "3":
                         let faction = Colossus()
-                        chooseYourName(player: faction)
-                        validNumber = true
+                        chooseYourName(players: players, hero: faction)
                     case "4":
                         let faction = Dwarf()
-                        chooseYourName(player: faction)
-                        validNumber = true
+                        chooseYourName(players: players, hero: faction)
                     default:
-                        print("Enter a number between 1 and 4")
+                        print("\n❌  Enter a number between 1 and 4\n")
                         validNumber = false
                     }
                 }
             } while !validNumber
         }
     }
-    private func chooseYourName(player: Character) {
-        if let choice = readLine() {
-            player.name = choice
-            team.append(player)
+    private func chooseYourName(players: [Player], hero: Character) {
+        var validName: Bool
+        
+        repeat {
+            print("Choose a name for your hero:")
+            validName = true
+            if let choice = readLine() {
+                if team.isEmpty && players.isEmpty {
+                    hero.name = choice
+                    team.append(hero)
+                }
+                else {
+                    for hero in team {
+                        if choice == hero.name! {
+                            validName = false
+                            break
+                        }
+                    }
+                    for heroes in players {
+                        for hero in heroes.team {
+                            if choice == hero.name! {
+                                validName = false
+                                break
+                            }
+                        }
+                    }
+                    if validName {
+                        hero.name = choice
+                        team.append(hero)
+                    }
+                    else {
+                        print("\n❌  Name already taken")
+                    }
+                }
+            }
+        } while !validName
+    }
+    private func pri() {
+        for hero in team {
+            print("Name: \(hero.name!) Faction: \(hero.type!) Pv: \(hero.life) DMG: \(hero.dmg)")
         }
     }
-    func pri() {
-        for i in 0..<3 {
-            print("Name: \(team[i].name!) Faction: \(team[i].type!) Pv: \(team[i].life) DMG: \(team[i].dmg)")
+    func createTeam(players: [Player]) {
+        chooseYourCharacters(players: players)
+    }
+}
+
+class Launcher {
+    var players: [Player] = []
+    
+    private func description() {
+        print("Welcome to TeamFight !!!\n"
+            + "Each team will be composed by 3 fighters and fight until death 💀\n"
+            + "Ready !? \n")
+    }
+    private func initTeam() {
+        let player = Player()
+        player.createTeam(players: players)
+        players.append(player)
+    }
+    private func printTeam() {
+        for heroes in players {
+            for hero in heroes.team {
+                print("Name: \(hero.name!) Faction: \(hero.type!) Pv: \(hero.life) DMG: \(hero.dmg)")
+            }
         }
     }
     func play() {
         description()
-        chooseYourCharacters()
-        pri()
+        for i in 1...2 {
+            print("\nPlayer \(i) choose your heroes !!!")
+            initTeam()
+        }
+        printTeam()
     }
 }
 

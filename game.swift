@@ -1,5 +1,5 @@
 //
-//  game.swift
+//  test.swift
 //  
 //
 //  Created by Mahieu Bayon on 04/09/2017.
@@ -61,7 +61,7 @@ class Player {
     var team: [Character] = []
     var isAlive = true
     
-    private func chooseYourCharacters(players: [Player]) {
+    private func chooseYourCharacters(_ players: [Player]) {
         
         var validNumber: Bool
         
@@ -75,16 +75,16 @@ class Player {
                     switch choice {
                     case "1":
                         let faction = Warrior()
-                        chooseYourName(players: players, hero: faction)
+                        chooseYourName(players, hero: faction)
                     case "2":
                         let faction = Mage()
-                        chooseYourName(players: players, hero: faction)
+                        chooseYourName(players, hero: faction)
                     case "3":
                         let faction = Colossus()
-                        chooseYourName(players: players, hero: faction)
+                        chooseYourName(players, hero: faction)
                     case "4":
                         let faction = Dwarf()
-                        chooseYourName(players: players, hero: faction)
+                        chooseYourName(players, hero: faction)
                     default:
                         print("\n❌  Enter a number between 1 and 4\n")
                         validNumber = false
@@ -93,7 +93,7 @@ class Player {
             } while !validNumber
         }
     }
-    private func chooseYourName(players: [Player], hero: Character) {
+    private func chooseYourName(_ players: [Player], hero: Character) {
         var validName: Bool
         
         repeat {
@@ -135,8 +135,8 @@ class Player {
             print("Name: \(hero.name!) Faction: \(hero.type!) Pv: \(hero.life) DMG: \(hero.dmg)")
         }
     }
-    func createTeam(players: [Player]) {
-        chooseYourCharacters(players: players)
+    func createTeam(_ players: [Player]) {
+        chooseYourCharacters(players)
     }
 }
 
@@ -150,7 +150,7 @@ class Launcher {
     }
     private func initTeam() {
         let player = Player()
-        player.createTeam(players: players)
+        player.createTeam(players)
         players.append(player)
     }
     private func printTeam() {
